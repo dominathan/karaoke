@@ -1,111 +1,57 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
+'use strict';
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  Dimensions,
   StyleSheet,
   Text,
-  View,
-  TextInput,
-  TouchableHighlight
+  TouchableHighlight,
+  View
 } from 'react-native';
+import Camera from 'react-native-camera';
 
 class karaoke extends Component {
-  handleSubmit() {
-    return
-  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to NayNay House!
-        </Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Username"
-          >
-        </TextInput>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Email"
-          >
-        </TextInput>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Password"
-          >
-        </TextInput>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Password Confirmation"
-          >
-        </TextInput>
-        <TouchableHighlight
-         style={styles.button}
-         onPress={this.handleSubmit.bind(this)}
-         underlayColor="white">
-         <Text style={styles.buttonText}> Create Account </Text>
-       </TouchableHighlight>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        <Camera
+          ref={(cam) => {
+            this.camera = cam;
+          }}
+          style={styles.preview}
+          aspect={Camera.constants.Aspect.fill}>
+          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+        </Camera>
       </View>
     );
+  }
+
+  takePicture() {
+    this.camera.capture()
+      .then((data) => console.log(data))
+      .catch(err => console.error(err));
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  preview: {
     flex: 1,
-     padding: 30,
-     marginTop: 65,
-     flexDirection: 'column',
-     justifyContent: 'center',
-     backgroundColor: '#48BBEC'
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  textInput: {
-    height: 50,
-    padding: 4,
-    marginRight: 5,
-    marginTop: 5,
-    fontSize: 23,
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 8,
-    color: 'white'
-  },
-  buttonText: {
-   fontSize: 18,
-   color: '#111',
-   alignSelf: 'center'
- },
- button: {
-   height: 45,
-   flexDirection: 'row',
-   backgroundColor: 'white',
-   borderColor: 'white',
-   borderWidth: 1,
-   borderRadius: 8,
-   marginBottom: 10,
-   marginTop: 10,
-   alignSelf: 'stretch',
-   justifyContent: 'center'
- },
+  capture: {
+    flex: 0,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    color: '#000',
+    padding: 10,
+    margin: 40
+  }
 });
 
 AppRegistry.registerComponent('karaoke', () => karaoke);
