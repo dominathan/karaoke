@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  View
+  View,
+  CameraRoll
 } from 'react-native';
 import Camera from 'react-native-camera';
 
@@ -23,11 +24,9 @@ class karaoke extends Component {
           }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}>
-          <Text
-            style={styles.capture}
-            onPress={this.record.bind(this)}>
-              [CAPTURE]
-          </Text>
+          <TouchableHighlight onPressIn={this.record.bind(this)} onPressOut={this.stopRecording.bind(this)} >
+                    <Text style={{color: 'blue'}} >Take Picture</Text>
+          </TouchableHighlight>
         </Camera>
       </View>
     );
@@ -51,7 +50,7 @@ class karaoke extends Component {
 
   stopRecording() {
     console.log('pause');
-    this.refs.cam.stopCapture()
+    this.camera.stopCapture()
   }
 
 }
