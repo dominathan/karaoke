@@ -20,7 +20,11 @@ class karaoke extends Component {
           }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}>
-          <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+          <Text
+            style={styles.capture}
+            onPress={this.record.bind(this)}>
+              [CAPTURE]
+          </Text>
         </Camera>
       </View>
     );
@@ -31,6 +35,22 @@ class karaoke extends Component {
       .then((data) => console.log(data))
       .catch(err => console.error(err));
   }
+  record() {
+    console.log('record');
+    this.camera.capture({audio: true,
+                           mode: Camera.constants.CaptureMode.video,
+                           target: Camera.constants.CaptureTarget.cameraRoll
+                          }, function(err, data) {
+      console.log(err, data);
+    });
+
+  }
+
+  stopRecording() {
+    console.log('pause');
+    this.refs.cam.stopCapture()
+  }
+
 }
 
 const styles = StyleSheet.create({
